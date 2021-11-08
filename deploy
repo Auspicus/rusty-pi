@@ -6,9 +6,9 @@ set -o pipefail
 set -o xtrace
 
 readonly TARGET_HOST=pi@192.168.0.30
-readonly TARGET_PATH=/home/pi/pi-controller
+readonly TARGET_PATH=/home/pi/rusty-pi
 readonly TARGET_ARCH=arm-unknown-linux-gnueabihf
-readonly SOURCE_PATH=./target/${TARGET_ARCH}/release/pi-controller
+readonly SOURCE_PATH=./target/${TARGET_ARCH}/release/rusty-pi
 
 cargo build --release --target=${TARGET_ARCH}
 rsync ${SOURCE_PATH} ${TARGET_HOST}:${TARGET_PATH}
