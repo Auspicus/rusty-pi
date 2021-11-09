@@ -24,10 +24,11 @@ fn main() {
     // This is really stupid.
     // Should be handling connections using threads.
     for stream in server.incoming() {
-        let mut websocket = accept(stream.unwrap()).unwrap();
         let pin_arc_copy: Arc<Mutex<OutputPin>> = Arc::clone(&pin_arc);
 
         thread::spawn(move || {
+            let mut websocket = accept(stream.unwrap()).unwrap();
+            
             loop {
                 let msg = match websocket.read_message() {
                     Ok(msg) => msg,
