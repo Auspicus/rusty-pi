@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
+
+readonly TARGET_HOST=pi@192.168.0.30
+readonly TARGET_PATH=/home/pi/rusty-pi
+readonly TARGET_ARCH=arm-unknown-linux-gnueabihf
+readonly SOURCE_PATH=./target/${TARGET_ARCH}/release/rusty-pi
+
+cargo build --release --target=${TARGET_ARCH}
