@@ -19,6 +19,12 @@ fn main() {
         .into_output();
     println!("Connected to on-board GPIO");
 
+    // Initialize the PWM peripheral on the Raspberry Pi
+    let pwm = Pwm::new(Channel::Pwm0).unwrap();
+
+    // Set the PWM frequency to 50Hz (typical for servos)
+    pwm.set_period(Duration::from_micros(20_000)).unwrap();
+
     let pin_arc: Arc<Mutex<OutputPin>> = Arc::new(Mutex::new(engine_pin));
 
     // This is really stupid.
@@ -39,7 +45,10 @@ fn main() {
 
                 // We do not want to send back ping/pong messages.
                 if msg.is_binary() || msg.is_text() {
+                    let text = msg.to_text();
+                    let val = f32::try_from(value);
                     let mut pin = pin_arc_copy.lock().expect("Mutex poisoned by another thread.");
+                    pwm.set_pulse_width(Duration::from_micros()).unwrap();
                     flip_flop_pin(&mut pin, 1);
                     println!("Responded: {}", msg);
                     websocket.write_message(msg).unwrap();

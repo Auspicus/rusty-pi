@@ -6,15 +6,25 @@
   <title>WebSocket test</title>
 </head>
 <body>
+  <input type="range" min="0" max="1" value="0" step="0.01" class="slider" id="myRange">
+  
   <script>
     const run = () => {
-      const HOST = '192.168.0.30'
+      const $input = document.querySelector('#myRange')
+     
+      const HOST = '192.168.0.6'
       const PORT = 9001
 
       const ws = new WebSocket(`ws://${HOST}:${PORT}`)
+
       ws.CLOSED
       ws.addEventListener('open', async () => {
         ws.send("Hello, world!")
+      })
+
+      $input.addEventListener('input', (e) => {
+        // console.log()
+        ws.send(e.target.value)
       })
     }
     run()
